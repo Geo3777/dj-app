@@ -15,13 +15,13 @@ code {
 }
 
 table > thead > tr > th {
-  border: 3px solid #212a35;
+  border: 5px solid #212a35;
 }
 table > tbody > tr > th {
-  border: 3px solid #212a35;
+  border: 5px solid #212a35;
 }
 table > tbody > tr > td {
-  border: 3px solid #212a35;
+  border: 5px solid #212a35;
 }
 a {
   text-decoration: none;

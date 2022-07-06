@@ -1,27 +1,44 @@
-import { useRef } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-function Song(props) {
-  const location = useLocation();
+import { useState, useEffect, useRef } from "react";
+import { useHistory, useParams } from "react-router-dom";
+function Song() {
+  const params = useParams();
   const history = useHistory();
-  const id = location.state.id;
+  const djId = params.djId;
+  const songId = params.songId;
   const nameInputRef = useRef();
   const coverInputRef = useRef();
   const descriptionInputRef = useRef();
+  const [loadedSong, setloadedSong] = useState({});
+  console.log(djId);
+  console.log(songId);
+  const req = `https://warm-dawn-39200.herokuapp.com/api/djs/${djId}/tracks/${songId}`;
+  console.log(req);
+  useEffect(() => {
+    fetch(
+      `https://warm-dawn-39200.herokuapp.com/api/djs/${djId}/tracks/${songId}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const songDetails = data;
+        console.log(songDetails);
+        setloadedSong(songDetails);
+      });
+  }, [songId]);
+
   function submitHandler(event) {
     event.preventDefault();
-
     const enteredName = nameInputRef.current.value;
     const enteredCover = coverInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
-
     const songData = {
       name: enteredName,
       cover_url: enteredCover,
       description: enteredDescription,
-      author_id: props.author_id,
+      author_id: djId,
     };
+
     fetch(
-      `https://warm-dawn-39200.herokuapp.com/api/djs/${props.author_id}/tracks/${id}`,
+      `https://warm-dawn-39200.herokuapp.com/api/djs/${djId}/tracks/${songId}`,
       {
         method: "PUT",
         body: JSON.stringify(songData),
@@ -30,12 +47,12 @@ function Song(props) {
         },
       }
     ).then(() => {
-      history.replace("/");
+      history.replace(`/djs/${djId}`);
     });
   }
   function deleteHandler() {
     fetch(
-      `https://warm-dawn-39200.herokuapp.com/api/djs/${props.author_id}/tracks/${id}`,
+      `https://warm-dawn-39200.herokuapp.com/api/djs/${djId}/tracks/${songId}`,
       {
         method: "DELETE",
         headers: {
@@ -43,7 +60,7 @@ function Song(props) {
         },
       }
     ).then(() => {
-      history.replace("/");
+      history.replace(`/djs/${djId}`);
     });
   }
   return (
@@ -55,18 +72,18 @@ function Song(props) {
         <div className="col-lg-4 col-md-6 col-sm-12 p-3 ">
           <div className="card  bg-success">
             <img
-              src={location.state.cover_url}
+              src={loadedSong.cover_url}
               className="card-img-top"
-              alt={location.state.id}
+              alt={loadedSong.id}
             />
             <div className="card-body">
               <h5 className="card-title">
-                {location.state.name} ID:{location.state.id}
+                {loadedSong.name} ID:{loadedSong.id}
               </h5>
-              <p className="card-text">{location.state.description}</p>
+              <p className="card-text">{loadedSong.description}</p>
               <div className="d-grid gap-2">
                 <button
-                  class="btn btn-dark mt-2"
+                  className="btn btn-dark mt-2"
                   type="button"
                   onClick={deleteHandler}
                 >
@@ -88,8 +105,8 @@ function Song(props) {
                       type="text"
                       className="form-control bg-dark text-light"
                       id="2"
-                      required
                       ref={nameInputRef}
+                      defaultValue={loadedSong.name}
                     />
                   </div>
                   <div className="form-group">
@@ -100,6 +117,7 @@ function Song(props) {
                       id="3"
                       required
                       ref={coverInputRef}
+                      defaultValue={loadedSong.cover_url}
                     />
                   </div>
                   <div className="form-group">
@@ -111,6 +129,7 @@ function Song(props) {
                       rows="3"
                       required
                       ref={descriptionInputRef}
+                      defaultValue={loadedSong.description}
                     />
                   </div>
                   <div className="d-grid gap-2">
@@ -119,7 +138,8 @@ function Song(props) {
                       type="button"
                       onClick={submitHandler}
                     >
-                      Edit Song
+                      Don't Press! Grave Consequences ahead! Aplication unusable
+                      for at least 30 mins!
                     </button>
                   </div>
                 </form>
