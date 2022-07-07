@@ -2,11 +2,8 @@ import { useHistory } from "react-router-dom";
 function TableRow(props) {
   const history = useHistory();
   function navigateToSongs() {
-    history.push("/single-dj", {
-      name: props.name,
-      id: props.id,
-      description: props.description,
-    });
+    const djId = props.id;
+    history.push(`/djs/${djId}`);
   }
   return (
     <tr>

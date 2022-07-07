@@ -1,13 +1,11 @@
 import { useHistory } from "react-router-dom";
 function SongCard(props) {
   const history = useHistory();
+  const djId = props.author_id;
+  const songId = props.id;
   function toSong() {
-    history.push("/song", {
-      name: props.name,
-      id: props.id,
-      description: props.description,
-      cover_url: props.cover_url,
-      author_id: props.author_id,
+    history.push(`/djs/${djId}/song/${songId}`, {
+      key: props.id,
     });
   }
   return (
@@ -18,7 +16,7 @@ function SongCard(props) {
           <h5 className="card-title">{props.name}</h5>
           <p className="card-text">{props.description}</p>
           <div className="d-grid gap-2">
-            <button class="btn btn-dark" type="button" onClick={toSong}>
+            <button className="btn btn-dark" type="button" onClick={toSong}>
               More
             </button>
           </div>

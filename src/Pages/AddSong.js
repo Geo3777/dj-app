@@ -1,23 +1,20 @@
 import { useRef } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 function AddSong() {
-  const location = useLocation();
   const history = useHistory();
-  const authorId = location.state.id;
-  console.log(authorId);
-  const idInputRef = useRef();
+  const params = useParams();
+  const authorId = params.djId;
   const nameInputRef = useRef();
   const coverInputRef = useRef();
   const descriptionInputRef = useRef();
   function submitHandler(event) {
     event.preventDefault();
-    const enteredId = idInputRef.current.value;
+
     const enteredName = nameInputRef.current.value;
     const enteredCover = coverInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
 
     const songData = {
-      id: parseInt(enteredId),
       name: enteredName,
       cover_url: enteredCover,
       description: enteredDescription,
@@ -30,8 +27,7 @@ function AddSong() {
         "Content-Type": "application/json",
       },
     }).then(() => {
-      history.replace("/");
-      console.log(songData);
+      history.replace(`/djs/${authorId}`);
     });
   }
   return (
@@ -39,16 +35,6 @@ function AddSong() {
       <p className="display-5 text-success text-center">ADD A SONG</p>
       <div className="d-flex align-items-center justify-content-center">
         <form className="text-success lead w-25">
-          <div className="form-group">
-            <label>ID</label>
-            <input
-              type="text"
-              className="form-control bg-dark text-light"
-              id="1"
-              required
-              ref={idInputRef}
-            />
-          </div>
           <div className="form-group">
             <label>Name</label>
             <input

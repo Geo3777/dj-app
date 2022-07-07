@@ -1,4 +1,4 @@
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import AllDjs from "./Pages/AllDjs";
 import Header from "./Components/UI/Header";
 import Footer from "./Components/UI/Footer";
@@ -8,22 +8,22 @@ import Song from "./Pages/Song";
 function App() {
   return (
     <div>
-      <Header></Header>
+      <Header />
       <Switch>
-        <Route path="/" exact={true}>
-          <AllDjs></AllDjs>
+        <Route path="/djs/:djId/song/:songId">
+          <Song />
         </Route>
-        <Route path="/single-dj">
-          <SingleDj></SingleDj>
+        <Route path="/djs/:djId/add-song">
+          <AddSong />
         </Route>
-        <Route path="/add-song">
-          <AddSong></AddSong>
+        <Route path="/djs/:djId">
+          <SingleDj />
         </Route>
-        <Route path="/song">
-          <Song></Song>
+        <Route path="/djs">
+          <AllDjs />
         </Route>
       </Switch>
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 }
